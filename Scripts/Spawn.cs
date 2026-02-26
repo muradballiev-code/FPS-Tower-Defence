@@ -5,7 +5,8 @@ using UnityEngine;
 public class Spawn : MonoBehaviour
 {
     private int spawnedCount;
-    private int maxEnemies = 5; //Set max Enemies count
+    [SerializeField]
+    private int maxEnemies = 15; //Set max Enemies count
     private float nextSpawnTime;
     [SerializeField]
     private float firstSpawnDelay = 2f;  //Set how many seconds the first enemy should appear

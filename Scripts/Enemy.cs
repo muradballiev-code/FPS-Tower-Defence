@@ -56,6 +56,8 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private AudioClip _hitSound;
     [SerializeField]
+    private AudioClip _bloodeHit;
+    [SerializeField]
     private AudioClip _deathSound;
     [SerializeField]
     private AudioClip _escapeSound;
@@ -161,8 +163,6 @@ public class Enemy : MonoBehaviour
         _currentPos++;
 
         _startFind = true;
-
-        Debug.Log(_currentPos + " -- " + _pointsPos.Length);
 
         if (_currentPos >= _pointsPos.Length)
         {
@@ -348,6 +348,16 @@ public class Enemy : MonoBehaviour
             return;
         }
 
+        if (_aiState == AiState.Moving)
+        {
+            _enemyAnim.SetTrigger("HitRun");
+        }
+        else if(_aiState == AiState.Covering)
+        {
+            _enemyAnim.SetTrigger("HitCover");
+        }
+
+        _audioSource.PlayOneShot(_bloodeHit);
         _audioSource.PlayOneShot(_hitSound);
     }
 

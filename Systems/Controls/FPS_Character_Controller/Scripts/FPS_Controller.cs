@@ -99,6 +99,8 @@ namespace GameDevHQ.FileBase.Plugins.FPS_Character_Controller
         //Player Shoot method
         public void PlayerShoot()
         {
+            Vector3 direct = Vector3.zero;
+
             //Set direction to the Ray
             Ray position = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
             RaycastHit hit;
@@ -109,39 +111,45 @@ namespace GameDevHQ.FileBase.Plugins.FPS_Character_Controller
                 //If hit Someone
                 if (hit.collider != null)
                 {
-                    switch(hit.collider.tag)
+                    direct = hit.point;
+
+                    switch (hit.collider.tag)
                     {
                         //Check which collider we hit and get required method
                         case "Enemy":
                             hit.collider.GetComponent<Enemy>().EnemyDamage();
-                        break;
+                            break;
                         case "Barrier":
                             hit.collider.GetComponent<Barrier>().BarrierDamage();
-                        break;
+                            break;
                         case "Barrel":
                             hit.collider.GetComponent<Barrel>().BarrelDamage();
-                        break;
-                        default :
-                        break;
+                            break;
+                        default:
+                            break;
                     }
-
-                    //Instantiate bullet
-                    GameObject bullet = Instantiate(_bulletPrefab, _firePoint.position, _firePoint.rotation);
-                    bullet.transform.parent = _bulletParentContainer.transform;
-
-                    //Call Bullet script
-                    Bullet bulletScript = bullet.GetComponent<Bullet>();
-
-                    Vector3 shootDirection = (hit.point - _firePoint.position).normalized;
-                    bullet.transform.rotation = Quaternion.LookRotation(shootDirection);
-
-                    //Call method
-                    bulletScript.BulletShoot(shootDirection);
-
-                    //Play shot sound
-                    _audioSource.PlayOneShot(_shootSound);
                 }
             }
+            else
+            {
+                direct = position.origin + position.direction * 1000f;
+            }
+
+            //Instantiate bullet
+            GameObject bullet = Instantiate(_bulletPrefab, _firePoint.position, _firePoint.rotation);
+            bullet.transform.parent = _bulletParentContainer.transform;
+            //Call Bullet script
+            Bullet bulletScript = bullet.GetComponent<Bullet>();
+
+
+            Vector3 shootDirection = (direct - _firePoint.position).normalized;
+            bullet.transform.rotation = Quaternion.LookRotation(shootDirection);
+
+            //Call method
+            bulletScript.BulletShoot(shootDirection);
+
+            //Play shot sound
+            _audioSource.PlayOneShot(_shootSound);
         }
 
         //Zoom Camera

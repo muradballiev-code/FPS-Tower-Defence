@@ -46,18 +46,21 @@ public class GameManager : MonoBehaviour
 
     public void YouWin()
     {
+        Cursor.visible = true;
         _winObj.gameObject.SetActive(true);
         _gameRest.gameObject.SetActive(true);
     }
 
     public void YouLose()
     {
+        Cursor.visible = true;
         _loseObj.gameObject.SetActive(true);
         _gameRest.gameObject.SetActive(true);
     }
 
     public void GameOver()
     {
+        Cursor.visible = true;
         _gameOverObj.gameObject.SetActive(true);
         _gameRest.gameObject.SetActive(true);
     }
